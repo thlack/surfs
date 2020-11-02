@@ -1,0 +1,4 @@
+{:linters {}
+ :lint-as {clojure.test.check.clojure-test/defspec clj-kondo.lint-as/def-catch-all
+           thlack.surfs.test-utils/defcheck clj-kondo.lint-as/def-catch-all
+           thlack.surfs.test-utils/defrendertest clj-kondo.lint-as/def-catch-all}}

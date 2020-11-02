@@ -1,0 +1,1 @@
+["^ ","~$check",["^ ","~:row",10,"~:col",1,"~:fixed-arities",["~#set",[2]],"~:name","^0","~:ns","~$thlack.surfs.test-utils","~:top-ns","^7"],"~$defcheck",["^ ","^1",21,"^2",1,"~:macro",true,"^3",["^4",[3]],"^5","^9","^6","^7","^8","^7"],"~$defrendertest",["^ ","^1",26,"^2",1,"^:",true,"~:varargs-min-arity",1,"^5","^;","^6","^7","^8","^7"]]

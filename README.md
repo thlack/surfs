@@ -6,12 +6,15 @@
 
 Surfs is a library for creating user interfaces in [Slack](https://api.slack.com/) applications. It aims to make creating Slack [surfaces](https://api.slack.com/surfaces) enjoyable.
 
+[![cljdoc badge](https://cljdoc.org/badge/thlack/surfs)](https://cljdoc.org/d/thlack/surfs/CURRENT) [![Clojars Project](https://img.shields.io/clojars/v/thlack/surfs.svg)](https://clojars.org/thlack/surfs)
+
+
 ## Table of Contents
 
 - [Rationale](#rationale)
 - [Using Surfs](#using-surfs)
     - [Component reference](doc/components.md)
-    - [API Docs](#)
+    - [API Docs](https://cljdoc.org/d/thlack/surfs/CURRENT)
     - [Rendering components](#rendering-components)
     - [Defining custom components](#defining-custom-components)
     - [Children](#children)

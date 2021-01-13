@@ -287,10 +287,11 @@
 
 (defspec actions
   iterations
-  (prop/for-all [block (s/gen ::blocks.spec/actions)]
+  (prop/for-all [props (s/gen :block/props)
+                 block (s/gen ::blocks.spec/actions)]
                 (render ::blocks.spec/actions
                         (apply vector :actions
-                               (dissoc block :elements)
+                               props
                                (:elements block)))))
 
 (defn make-fields

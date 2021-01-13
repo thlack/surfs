@@ -19,11 +19,14 @@
 
 (defn parse-args
   "Used for supporting components that may not require any props."
-  [args]
-  (let [head (first args)]
-    (if (and (> (count args) 1) (map? head))
-      (into [head] (rest args))
-      (into [{}] args))))
+  ([args spec]
+   (let [head (first args)]
+     (cond
+       (and (> (count args) 1) (s/valid? spec head)) (into [head] (rest args))
+       (not (seq head)) args
+       :else (into [{}] args))))
+  ([args]
+   (parse-args args map?)))
 
 ;;; Children
 

@@ -7,6 +7,9 @@
 
 (s/def :block/props (s/keys :opt-un [::strings.spec/block_id]))
 
+; Internal use only - used for validating prop maps that MUST contain block_id in order to be considered props
+(s/def :block/props* (s/keys :req-un [::strings.spec/block_id]))
+
 ;;; [:actions]
 
 (s/def :actions/children
@@ -54,3 +57,17 @@
       (s/gen ::blocks.spec/input))))
 
 (s/def :input/props (s/merge :block/props (s/keys :opt-un [:input/dispatch_action :input/optional])))
+
+(defn input-props?
+  "Predicate for seeing if the given props map constitutes input block props"
+  [props]
+  (if (map? props)
+    (-> props
+        (select-keys [:block_id :dispatch_action :optional])
+        (seq)
+        (some?))
+    false))
+
+(s/fdef input-props?
+  :args any?
+  :ret boolean?)

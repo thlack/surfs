@@ -8,7 +8,17 @@
             [thlack.surfs.elements.spec :as elements.spec]
             [thlack.surfs.elements.components.spec]
             [thlack.surfs.composition.components :as comp]
-            [thlack.surfs.composition.spec]))
+            [thlack.surfs.composition.spec])
+  (:import [java.util UUID]))
+
+;;; Action IDs
+
+(defn- with-action-id
+  "Provides a random uuid string if not already present in props."
+  [{:keys [action_id] :as props}]
+  (if (some? action_id)
+    props
+    (assoc props :action_id (str (UUID/randomUUID)))))
 
 ;;; options and option-groups
 
@@ -57,15 +67,27 @@
    
    ```clojure
    [:button {:action_id \"A123\" :value \"1\"} \"Click Me!\"]
-   ```"
-  [props & children]
-  (-> (assoc props :type :button)
-      (props/with-children children :button/child)
-      (comp/with-text #{:text})
-      (validated ::elements.spec/button)))
+   ```
+   
+   Without props:
+   
+   ```clojure
+   [:button \"Click Me!\"]
+   ```
+   
+   Omitting an action id for a button almost never makes sense. The action id may be
+   ignored when using a url button."
+  [& args]
+  (let [[props & children] (props/parse-args args)]
+    (-> (assoc props :type :button)
+        (with-action-id)
+        (props/with-children children :button/child)
+        (comp/with-text #{:text})
+        (validated ::elements.spec/button))))
 
 (s/fdef button
-  :args (s/cat :props :button/props :children :button/children)
+  :args (s/alt :props-and-children (s/cat :props :button/props :children :button/children)
+               :children (s/cat :children :button/children))
   :ret ::elements.spec/button)
 
 (defn checkboxes
@@ -403,14 +425,26 @@
     [:option {:value \"1\" :url \"https://google.com\"} \"Google\"]
     [:option {:value \"2\" :url \"https://bing.com\"} \"Bing\"]
     [:option {:value \"3\" :url \"https://duckduckgo.com\"} \"DuckDuckGo\"]]
+   ```
+   
+   Without props:
+   
+   ```clojure
+   [:overflow
+    [:option {:value \"1\" :url \"https://google.com\"} \"Google\"]
+    [:option {:value \"2\" :url \"https://bing.com\"} \"Bing\"]
+    [:option {:value \"3\" :url \"https://duckduckgo.com\"} \"DuckDuckGo\"]]
    ```"
-  [props & children]
-  (-> (assoc props :type :overflow)
-      (props/with-children children :overflow/child)
-      (validated ::elements.spec/overflow)))
+  [& args]
+  (let [[props & children] (props/parse-args args :overflow/props*)]
+    (-> (assoc props :type :overflow)
+        (with-action-id)
+        (props/with-children children :overflow/child)
+        (validated ::elements.spec/overflow))))
 
 (s/fdef overflow
-  :args (s/cat :props :overflow/props :children :overflow/children)
+  :args (s/alt :props-and-children (s/cat :props :overflow/props :children :overflow/children)
+               :children (s/cat :children :overflow/children))
   :ret ::elements.spec/overflow)
 
 (defn plain-text-input

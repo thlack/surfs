@@ -109,13 +109,17 @@
     [:text "This is irreversible!"]]
    "Click Me!"]
 
-  (fn [[literal with-text with-confirm]]
+  [:button "Click Me!"]
+
+  (fn [[literal with-text with-confirm no-props]]
     (let [expected {:action_id "A123"
                     :value     "1"
                     :type      :button
                     :text      {:type :plain_text
                                 :text "Click Me!"}}]
       (is (= expected literal with-text))
+      (is (= (dissoc expected :value :action_id) (dissoc no-props :action_id)))
+      (is (string? (:action_id no-props)))
       (assert-confirm expected with-confirm :confirm "Ok!" :deny "Nah!" :title "You sure?!?!?" :text "This is irreversible!"))))
 
 (defrendertest checkboxes
@@ -497,6 +501,11 @@
    [:option {:value "2" :url "https://bing.com"} "Bing"]
    [:option {:value "3" :url "https://duckduckgo.com"} "DuckDuckGo"]]
 
+  [:overflow
+   [:option {:value "1" :url "https://google.com"} "Google"]
+   [:option {:value "2" :url "https://bing.com"} "Bing"]
+   [:option {:value "3" :url "https://duckduckgo.com"} "DuckDuckGo"]]
+
   [:overflow {:action_id "A123"}
    [:option {:value "1" :url "https://google.com"} "Google"]
    [:option {:value "2" :url "https://bing.com"} "Bing"]
@@ -504,13 +513,15 @@
    [:confirm {:confirm "Ok!" :deny "Nah!" :title "You sure?!?!?"}
     [:text "This is irreversible!"]]]
 
-  (fn [[first with-confirm]]
+  (fn [[first no-props with-confirm]]
     (let [expected {:action_id "A123"
                     :type :overflow
                     :options [{:value "1" :url "https://google.com" :text {:type :plain_text :text "Google"}}
                               {:value "2" :url "https://bing.com" :text {:type :plain_text :text "Bing"}}
                               {:value "3" :url "https://duckduckgo.com" :text {:type :plain_text :text "DuckDuckGo"}}]}]
       (is (= expected first))
+      (is (= (dissoc expected :action_id) (dissoc no-props :action_id)))
+      (is (string? (:action_id no-props)))
       (assert-confirm expected with-confirm :confirm "Ok!" :deny "Nah!" :title "You sure?!?!?" :text "This is irreversible!"))))
 
 (defrendertest plain-text-input
@@ -568,7 +579,15 @@
    [:channels-select {:action_id "A456" :initial_channel "C123"}
     [:placeholder "Select channel"]]]
 
-  (fn [[block]]
+  [:actions
+   [:radio-buttons {:action_id "A123"}
+    [:option {:value "1"} "Pepperoni"]
+    [:option {:value "2" :selected? true} "Pineapple"]
+    [:option {:value "3"} "Mushrooms"]]
+   [:channels-select {:action_id "A456" :initial_channel "C123"}
+    [:placeholder "Select channel"]]]
+
+  (fn [[block no-props]]
     (let [expected {:block_id "B123"
                     :type :actions
                     :elements
@@ -584,7 +603,8 @@
                       :type :channels_select
                       :placeholder
                       {:type :plain_text :text "Select channel" :emoji true}}]}]
-      (is (= expected block)))))
+      (is (= expected block))
+      (is (= (dissoc expected :block_id) no-props)))))
 
 (defrendertest fields
   [:fields
@@ -609,6 +629,13 @@
     [:confirm {:confirm "Ok!" :deny "Nah!" :title "You sure?!?!?"}
      [:text "This is irreversible!"]]]]
 
+  [:section
+   [:text "This is an important action"]
+   [:datepicker {:action_id "A123" :initial_date "2020-11-30"}
+    [:placeholder "The date"]
+    [:confirm {:confirm "Ok!" :deny "Nah!" :title "You sure?!?!?"}
+     [:text "This is irreversible!"]]]]
+
   [:section {:block_id "B123"}
    [:text "This is an important action"]
    [:fields
@@ -628,7 +655,7 @@
     [:confirm {:confirm "Ok!" :deny "Nah!" :title "You sure?!?!?"}
      [:text "This is irreversible!"]]]]
 
-  (fn [[block with-fields only-fields]]
+  (fn [[block no-props with-fields only-fields]]
     (let [expected {:block_id "B123"
                     :type :section
                     :accessory
@@ -647,6 +674,7 @@
                                       [{:type :mrkdwn, :text "# Field 1", :verbatim false}
                                        {:type :plain_text, :text "Field 2", :emoji true}])]
       (is (= expected block))
+      (is (= (dissoc expected :block_id) no-props))
       (is (= expected-with-fields with-fields))
       (is (= (dissoc expected-with-fields :text) only-fields)))))
 
@@ -655,7 +683,11 @@
    [:image {:alt_text "It's Bill" :image_url "http://www.fillmurray.com/200/300"}]
    [:text "This is some text"]]
 
-  (fn [[context]]
+  [:context
+   [:image {:alt_text "It's Bill" :image_url "http://www.fillmurray.com/200/300"}]
+   [:text "This is some text"]]
+
+  (fn [[context no-props]]
     (let [expected {:block_id "B123"
                     :type     :context
                     :elements [{:alt_text  "It's Bill"
@@ -663,7 +695,8 @@
                                 :type      :image}
                                {:type :plain_text
                                 :text "This is some text"}]}]
-      (is (= expected context)))))
+      (is (= expected context))
+      (is (= (dissoc expected :block_id) no-props)))))
 
 (defrendertest divider
   [:divider]
@@ -679,12 +712,15 @@
 
   [:header {:block_id "B123"} "Hello"]
 
-  (fn [[first second]]
+  [:header "Hello"]
+
+  (fn [[first second no-props]]
     (let [expected {:block_id "B123"
                     :type :header
                     :text {:type :plain_text :text "Hello"}}]
       (is (= expected first))
-      (is (= expected second)))))
+      (is (= expected second))
+      (is (= (dissoc expected :block_id) no-props)))))
 
 (defrendertest image
   [:image {:image_url "http://www.fillmurray.com/200/300"
@@ -719,7 +755,14 @@
                        :initial_value "hello"}
     [:placeholder "Greeting"]]]
 
-  (fn [[block]]
+  [:input
+   [:label "Some input"]
+   [:hint "Do something radical"]
+   [:plain-text-input {:action_id "A123"
+                       :initial_value "hello"}
+    [:placeholder "Greeting"]]]
+
+  (fn [[block no-props]]
     (let [expected {:block_id "B123"
                     :dispatch_action false
                     :optional false
@@ -730,7 +773,8 @@
                               :placeholder {:type :plain_text :text "Greeting" :emoji true}}
                     :label {:type :plain_text :text "Some input" :emoji true}
                     :hint {:type :plain_text :text "Do something radical" :emoji true}}]
-      (is (= expected block)))))
+      (is (= expected block))
+      (is (= (dissoc expected :block_id :dispatch_action :optional) no-props)))))
 
 
 ;;; Views

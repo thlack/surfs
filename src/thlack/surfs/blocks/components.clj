@@ -3,7 +3,7 @@
    https://api.slack.com/reference/block-kit/blocks"
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.blocks.spec :as blocks.spec]
-            [thlack.surfs.blocks.components.spec]
+            [thlack.surfs.blocks.components.spec :as bc.spec]
             [thlack.surfs.composition.components :as comp]
             [thlack.surfs.composition.spec :as comp.spec]
             [thlack.surfs.elements.components :as elements]
@@ -23,14 +23,28 @@
      [:option {:value \"3\"} \"Mushrooms\"]]
     [:channels-select {:action_id \"A456\" :initial_channel \"C123\"}
      [:placeholder \"Select channel\"]]]
+   ```
+   
+   Without props:
+   
+   ```clojure
+   [:actions
+    [:radio-buttons {:action_id \"A123\"}
+     [:option {:value \"1\"} \"Pepperoni\"]
+     [:option {:value \"2\" :selected? true} \"Pineapple\"]
+     [:option {:value \"3\"} \"Mushrooms\"]]
+    [:channels-select {:action_id \"A456\" :initial_channel \"C123\"}
+     [:placeholder \"Select channel\"]]]
    ```"
-  [props & children]
-  (-> props
-      (assoc :elements (props/flatten-children children) :type :actions)
-      (validated ::blocks.spec/actions)))
+  [& args]
+  (let [[props & children] (props/parse-args args :block/props*)]
+    (-> props
+        (assoc :elements (props/flatten-children children) :type :actions)
+        (validated ::blocks.spec/actions))))
 
 (s/fdef actions
-  :args (s/cat :props :block/props :children :actions/children)
+  :args (s/alt :props-and-children (s/cat :props :block/props :children :actions/children)
+               :children (s/cat :children :actions/children))
   :ret ::blocks.spec/actions)
 
 (defn fields
@@ -83,43 +97,59 @@
      [:placeholder \"The date\"]
      [:confirm {:confirm \"Ok!\" :deny \"Nah!\" :title \"You sure?!?!?\"}
       [:text \"This is irreversible!\"]]]]
+   ```
+
+   Without props:
+   
+   ```clojure
+   [:section
+    [:text \"This is an important action\"]
+    [:datepicker {:action_id \"A123\" :initial_date \"2020-11-30\"}
+     [:placeholder \"The date\"]
+     [:confirm {:confirm \"Ok!\" :deny \"Nah!\" :title \"You sure?!?!?\"}
+      [:text \"This is irreversible!\"]]]]
    ```"
-  ([props text-or-fields]
-   (section props text-or-fields nil))
-  ([props child1 child2]
-   (-> (assoc props :type :section)
-       (with-section-child child1)
-       (with-section-child child2)
-       (validated ::blocks.spec/section)))
-  ([props child1 child2 child3]
-   (-> (assoc props :type :section)
-       (with-section-child child1)
-       (with-section-child child2)
-       (with-section-child child3)
-       (validated ::blocks.spec/section))))
+  [& args]
+  (let [[props & children] (props/parse-args args :block/props*)]
+    (reduce with-section-child (assoc props :type :section) children)))
 
 (s/fdef section
-  :args (s/alt :text   (s/cat :props :block/props
-                              :text :section/text)
-               :fields (s/cat :props :block/props
-                              :fields ::blocks.spec/fields)
-               :text-and-accessory (s/cat :props :block/props
-                                          :text :section/text
+  :args (s/alt :props-and-text   (s/cat :props :block/props
+                                        :text :section/text)
+               :props-and-fields (s/cat :props :block/props
+                                        :fields ::blocks.spec/fields)
+               :props-and-text-and-accessory (s/cat :props :block/props
+                                                    :text :section/text
+                                                    :accessory :section/accessory)
+               :props-and-accessory-and-text (s/cat :props :block/props
+                                                    :accessory :section/accessory
+                                                    :text :section/text)
+               :props-and-fields-and-accessory (s/cat :props :block/props
+                                                      :fields ::blocks.spec/fields
+                                                      :accessory :section/accessory)
+               :props-and-accessory-and-fields (s/cat :props :block/props
+                                                      :accessory :section/accessory
+                                                      :fields ::blocks.spec/fields)
+               :props-and-text-and-fields (s/cat :props :block/props
+                                                 :text :section/text
+                                                 :fields ::blocks.spec/fields)
+               :props-and-fields-and-text (s/cat :props :block/props
+                                                 :fields ::blocks.spec/fields
+                                                 :text :section/text)
+
+               :text   (s/cat :text :section/text)
+               :fields (s/cat :fields ::blocks.spec/fields)
+               :text-and-accessory (s/cat :text :section/text
                                           :accessory :section/accessory)
-               :accessory-and-text (s/cat :props :block/props
-                                          :accessory :section/accessory
+               :accessory-and-text (s/cat :accessory :section/accessory
                                           :text :section/text)
-               :fields-and-accessory (s/cat :props :block/props
-                                            :fields ::blocks.spec/fields
+               :fields-and-accessory (s/cat :fields ::blocks.spec/fields
                                             :accessory :section/accessory)
-               :accessory-and-fields (s/cat :props :block/props
-                                            :accessory :section/accessory
+               :accessory-and-fields (s/cat :accessory :section/accessory
                                             :fields ::blocks.spec/fields)
-               :text-and-fields (s/cat :props :block/props
-                                       :text :section/text
+               :text-and-fields (s/cat :text :section/text
                                        :fields ::blocks.spec/fields)
-               :fields-and-text (s/cat :props :block/props
-                                       :fields ::blocks.spec/fields
+               :fields-and-text (s/cat :fields ::blocks.spec/fields
                                        :text :section/text)
                :all (s/cat :props :block/props
                            :text :section/text
@@ -136,14 +166,24 @@
    [:context {:block_id \"B123\"}
     [:image {:alt_text \"It's Bill\" :image_url \"http://www.fillmurray.com/200/300\"}]
     [:text \"This is some text\"]]
+   ```
+   
+   Without props:
+   
+   ```clojure
+   [:context
+    [:image {:alt_text \"It's Bill\" :image_url \"http://www.fillmurray.com/200/300\"}]
+    [:text \"This is some text\"]]
    ```"
-  [props & children]
-  (-> props
-      (assoc :elements (props/flatten-children children) :type :context)
-      (validated ::blocks.spec/context)))
+  [& args]
+  (let [[props & children] (props/parse-args args :block/props*)]
+    (-> props
+        (assoc :elements (props/flatten-children children) :type :context)
+        (validated ::blocks.spec/context))))
 
 (s/fdef context
-  :args (s/cat :props :block/props :children :context/children)
+  :args (s/alt :props-and-children (s/cat :props :block/props :children :context/children)
+               :children (s/cat :children :context/children))
   :ret ::blocks.spec/context)
 
 (defn divider
@@ -170,15 +210,24 @@
    
    ```clojure
    [:header {:block_id \"B123\"} \"Hello\"]
+   ```
+   
+   Without props:
+   
+   ```clojure
+   [:header \"Hello\"]
    ```"
-  [props text]
-  (-> props
-      (assoc :type :header)
-      (assoc :text (comp/text text))
-      (validated ::blocks.spec/header)))
+  ([props text]
+   (-> props
+       (assoc :type :header)
+       (assoc :text (comp/text text))
+       (validated ::blocks.spec/header)))
+  ([text]
+   (header {} text)))
 
 (s/fdef header
-  :args (s/cat :props :block/props :text :header-child/text)
+  :args (s/alt :props-and-children (s/cat :props :block/props :text :header-child/text)
+               :children (s/cat :text :header-child/text))
   :ret  ::blocks.spec/header)
 
 (defn image
@@ -207,7 +256,7 @@
 
 (defn input
   "A block that collects information from users. In order to distinguish
-   between hint and label children, the label child MUST be the first child
+   between hint and label children, the label child (or a child that evaluates to a plain text element) MUST be the first child
    included in the component.
    
    Component usage:
@@ -219,13 +268,26 @@
     [:plain-text-input {:action_id \"A123\"
                         :initial_value \"hello\"}
      [:placeholder \"Greeting\"]]]
+   ```
+   
+   Without props:
+   
+   ```clojure
+   [:input
+    [:label \"Some input\"]
+    [:hint \"Do something radical\"]
+    [:plain-text-input {:action_id \"A123\"
+                        :initial_value \"hello\"}
+     [:placeholder \"Greeting\"]]]
    ```"
-  [props label & children]
-  (-> (assoc props :type :input)
-      (assoc :label (comp/text label))
-      (props/with-children children :input/child)
-      (validated ::blocks.spec/input)))
+  [& args]
+  (let [[props label & children] (props/parse-args args bc.spec/input-props?)]
+    (-> (assoc props :type :input)
+        (assoc :label (comp/text label))
+        (props/with-children children :input/child)
+        (validated ::blocks.spec/input))))
 
 (s/fdef input
-  :args (s/cat :props :input/props :label :input-child/label  :children :input/children)
+  :args (s/alt :props-and-children (s/cat :props :input/props :label :input-child/label :children :input/children)
+               :children (s/cat :label :input-child/label :children :input/children))
   :ret  ::blocks.spec/input)

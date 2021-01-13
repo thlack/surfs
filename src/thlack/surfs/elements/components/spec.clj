@@ -27,7 +27,7 @@
     (s/* :button/child)
     #(gen/tuple (s/gen :button-child/text) (s/gen ::comp.spec/confirm))))
 
-(s/def :button/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:button/url :button/style :button/value]))
+(s/def :button/props (s/keys :opt-un [:button/url :button/style :button/value ::strings.spec/action_id]))
 
 ;;; [:checkboxes]
 
@@ -160,7 +160,10 @@
     (s/* :overflow/child)
     #(gen-option-parent ::elements.spec/overflow [:confirm])))
 
-(s/def :overflow/props (s/keys :req-un [::strings.spec/action_id]))
+(s/def :overflow/props (s/keys :opt-un [::strings.spec/action_id]))
+
+; Internal use only - used for validating overflow prop maps that MUST contain action_id in order to be considered props
+(s/def :overflow/props* (s/keys :req-un [::strings.spec/action_id]))
 
 ;;; [:plain-text-input]
 

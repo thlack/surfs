@@ -14,15 +14,11 @@
             [thlack.surfs.composition.spec :as comp.spec]
             [thlack.surfs.messages.components.spec]
             [thlack.surfs.messages.spec :as messages.spec]
+            [thlack.surfs.test-utils :refer [render]]
             [thlack.surfs.views.components.spec]
             [thlack.surfs.views.spec :as views.spec]))
 
 (def iterations 10)
-
-(defmacro render
-  [spec component]
-  `(let [result# (surfs.render/render ~component)]
-     (is (true? (s/valid? ~spec result#)))))
 
 ;;; Composition elements
 

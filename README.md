@@ -27,7 +27,8 @@ Slack's [Block Kit](https://api.slack.com/block-kit) is great! Writing blocks as
 * Familiar - Like [hiccup](https://github.com/weavejester/hiccup), [reagent](https://github.com/reagent-project/reagent), and [rum](https://github.com/tons)
 * Spec driven
     * There are specs for the whole block kit!
-    * Detailed validation messages given via [expound](https://github.com/bhb/expound)
+    * All component functions have specs via `(s/fdef)`
+    * All results are run through `(s/assert)` 
     * Learn about components through their specs!
 * Easier than writing hash maps
 * Easier to create reusable templates
@@ -36,6 +37,14 @@ Slack's [Block Kit](https://api.slack.com/block-kit) is great! Writing blocks as
 
 Surfs renders Slack blocks, elements, and composition objects from vectors. It also
 supports defining and using custom components (to organize and encapsulate Slack elements).
+
+### Development
+
+Surfs uses [clojure.spec.alpha/assert](https://clojuredocs.org/clojure.spec.alpha/assert) on all rendered results. All component functions contain function specs. This can greatly improve the development experience at the repl.
+
+See:
+* [clojure.spec.alpha/check-asserts](https://clojuredocs.org/clojure.spec.alpha/check-asserts)
+* [clojure.spec.test.alpha/instrument](https://clojure.github.io/spec.alpha/clojure.spec.test.alpha-api.html#clojure.spec.test.alpha/instrument)
 
 ### Rendering components
 

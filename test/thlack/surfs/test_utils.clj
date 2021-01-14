@@ -7,6 +7,8 @@
 
 (set! s/*explain-out* expound/printer)
 
+(s/check-asserts true)
+
 (defn check
   [sym num-tests]
   (let [check-result (st/check sym {:clojure.spec.test.check/opts {:num-tests num-tests}})
@@ -29,3 +31,8 @@
         assert-fn  (last children)]
     `(deftest ~name
        (~assert-fn (apply surfs/render ~components)))))
+
+(defmacro render
+  [spec component]
+  `(let [result# (surfs.render/render ~component)]
+     (is (true? (s/valid? ~spec result#)))))

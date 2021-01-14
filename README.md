@@ -126,6 +126,9 @@ Custom components defined via `defc` can be called as render functions themselve
 (greeting "Brian")
 ```
 
+The result of rendering a component defined via defc is either a single result or a sequence of results.
+A single result is only returned in the event that thlack.surfs/render would return a sequence containing a single item. This is to support scenarios where a component would suffice as the render function for the entire payload to Slack - as is the case with publishing views like home tabs and modals.
+
 ### Children
 
 Children are one or more nested components - such as `:option` elements placed in a `:static-select`.

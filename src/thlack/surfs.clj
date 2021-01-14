@@ -48,7 +48,10 @@
 (defn- build-defc-body
   [[bindings & body]]
   `(~bindings
-    (thlack.surfs/render ~@body)))
+    (let [result# (thlack.surfs/render ~@body)]
+      (if (= 1 (count result#))
+        (first result#)
+        result#))))
 
 (defn- defc'
   "Helper for generating the body of defc"
@@ -66,7 +69,12 @@
    Define a reusable surfs component.
    
    Defc creates a function that wraps the body in a call to thlack.surfs/render
-   and returns a SINGLE result. This macro is great for defining modals, home tabs, and messages - really
+   and returns a single result or a sequence of results. A single result is only returned
+   in the event that thlack.surfs/render would return a sequence containing a single item. This
+   is to support scenarios where a component would suffice as the render function for the entire
+   payload to slack - as is the case with publishing views like home tabs and modals.
+   
+   This macro is great for defining modals, home tabs, and messages - really
    any kind of slack view you want to encapsulate or reuse.
    
    The generated function will have the same name and semantics as the macro defntion,

@@ -656,7 +656,10 @@
     [:confirm {:confirm "Ok!" :deny "Nah!" :title "You sure?!?!?"}
      [:text "This is irreversible!"]]]]
 
-  (fn [[block no-props with-fields only-fields]]
+  [:section
+   [:text "Just text"]]
+
+  (fn [[block no-props with-fields only-fields text-only]]
     (let [expected {:block_id "B123"
                     :type :section
                     :accessory
@@ -677,7 +680,8 @@
       (is (= expected block))
       (is (= (dissoc expected :block_id) no-props))
       (is (= expected-with-fields with-fields))
-      (is (= (dissoc expected-with-fields :text) only-fields)))))
+      (is (= (dissoc expected-with-fields :text) only-fields))
+      (is (= {:type :section :text {:type :plain_text :text "Just text"}} text-only)))))
 
 (defrendertest context
   [:context {:block_id "B123"}

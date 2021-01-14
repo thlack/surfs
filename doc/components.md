@@ -260,6 +260,8 @@ Renders a [button element](https://api.slack.com/reference/block-kit/block-eleme
 (s/describe :button/props)
 ```
 
+The `:button` component can safely omit the `:action_id` prop (and thus all props). If `:action_id` is not provided, a uuid string will be generated. This simplifies cases where the button action_id may be ignored - as is the case with buttons that are used for opening urls.
+
 **Children**:
 
 Child | Required|Description
@@ -298,6 +300,14 @@ Child | Required|Description
   :title {:type :plain_text, :text "You sure?!?!?", :emoji true},
   :text {:type :plain_text, :text "This is irreversible!"},
   :style :primary}}
+
+; Input
+[:button "Click me"]
+
+; Output
+{:type :button,
+ :action_id "58113279-334f-42bf-aa25-95b48bf42481",
+ :text {:type :plain_text, :text "Click me"}}
 ```
 
 ### checkboxes
@@ -763,6 +773,8 @@ Renders an [overflow menu element](https://api.slack.com/reference/block-kit/blo
 (s/describe :overflow/props)
 ```
 
+The `:overflow` component can safely omit the `:action_id` prop (and thus all props). If `:action_id` is not provided, a uuid string will be generated. This simplifies cases where the overflow action_id may be ignored - as is the case with overflow menus containing only urls.
+
 **Children**
 
 Child | Required | Description
@@ -804,6 +816,20 @@ Child | Required | Description
   :title {:type :plain_text, :text "You sure?!?!?", :emoji true},
   :text {:type :plain_text, :text "This is irreversible!"},
   :style :primary},
+ :options
+ ({:value "1", :url "https://google.com", :text {:type :plain_text, :text "Google"}}
+  {:value "2", :url "https://bing.com", :text {:type :plain_text, :text "Bing"}}
+  {:value "3", :url "https://duckduckgo.com", :text {:type :plain_text, :text "DuckDuckGo"}})}
+
+; Input
+[:overflow
+  [:option {:value "1" :url "https://google.com"} "Google"]
+  [:option {:value "2" :url "https://bing.com"} "Bing"]
+  [:option {:value "3" :url "https://duckduckgo.com"} "DuckDuckGo"]]
+
+; Output
+{:type :overflow,
+ :action_id "32adf1df-4eff-4cbd-9c76-d60b0fe1a7b8",
  :options
  ({:value "1", :url "https://google.com", :text {:type :plain_text, :text "Google"}}
   {:value "2", :url "https://bing.com", :text {:type :plain_text, :text "Bing"}}
@@ -1283,6 +1309,8 @@ Renders an [actions block](https://api.slack.com/reference/block-kit/blocks#acti
 (s/describe :block/props)
 ```
 
+Props for `:actions` are optional.
+
 **Children**
 
 Child | Required | Description
@@ -1316,6 +1344,30 @@ elements | * (requires at least one element) | One or more of [button](#button),
    :type :channels_select,
    :placeholder {:type :plain_text, :text "Select channel", :emoji true}}],
  :type :actions}
+
+; Input
+[:actions
+  [:radio-buttons {:action_id "A123"}
+    [:option {:value "1"} "Pepperoni"]
+    [:option {:value "2" :selected? true} "Pineapple"]
+    [:option {:value "3"} "Mushrooms"]]
+  [:channels-select {:action_id "A456" :initial_channel "C123"}
+    [:placeholder "Select channel"]]]
+
+; Output
+{:elements
+ [{:action_id "A123",
+   :type :radio_buttons,
+   :options
+   ({:value "1", :text {:type :plain_text, :text "Pepperoni"}}
+    {:value "2", :text {:type :plain_text, :text "Pineapple"}}
+    {:value "3", :text {:type :plain_text, :text "Mushrooms"}}),
+   :initial_option {:value "2", :text {:type :plain_text, :text "Pineapple"}}}
+  {:action_id "A456",
+   :initial_channel "C123",
+   :type :channels_select,
+   :placeholder {:type :plain_text, :text "Select channel", :emoji true}}],
+ :type :actions}
 ```
 
 ### context
@@ -1327,6 +1379,8 @@ Renders a [context block](https://api.slack.com/reference/block-kit/blocks#conte
 ```clojure
 (s/describe :block/props)
 ```
+
+Props for `:context` are optional.
 
 **Children**
 
@@ -1348,6 +1402,17 @@ elements | * (requires at least one element) | One or more of [img](#img) or [te
  [{:alt_text "It's Bill", :image_url "http://www.fillmurray.com/200/300", :type :image}
   {:type :plain_text, :text "This is some text"}],
  :type :context}
+
+; Input
+[:context
+  [:image {:alt_text "It's Bill" :image_url "http://www.fillmurray.com/200/300"}]
+  [:text "This is some text"]]
+
+; Output
+{:elements
+ [{:alt_text "It's Bill", :image_url "http://www.fillmurray.com/200/300", :type :image}
+  {:type :plain_text, :text "This is some text"}],
+ :type :context}
 ```
 
 ### divider
@@ -1359,6 +1424,8 @@ Renders a [divider block](https://api.slack.com/reference/block-kit/blocks#divid
 ```clojure
 (s/describe :block/props)
 ```
+
+Props for `:divider` are optional.
 
 **Usage**
 
@@ -1380,6 +1447,8 @@ Renders a [header block](https://api.slack.com/reference/block-kit/blocks#header
 (s/describe :block/props)
 ```
 
+Props for `:header` are optional.
+
 **Children**
 
 Child | Required | Description
@@ -1394,6 +1463,12 @@ Child | Required | Description
 
 ; Output
 {:block_id "B123", :type :header, :text {:type :plain_text, :text "Hello"}}
+
+; Input
+[:header "Hello"]
+
+; Output
+{:type :header, :text {:type :plain_text, :text "Hello"}}
 ```
 
 ### image
@@ -1439,6 +1514,8 @@ Renders an [input block](https://api.slack.com/reference/block-kit/blocks#input)
 (s/describe :input/props)
 ```
 
+Props for `:input` are optional.
+
 **Children**
 
 The `input` block contains multiple plain-text children that would make it conceptually difficult to organize them by spec. As such, the `input` block always assumes the first child is a [plain-text](#plain-text) component used for the label. The order of the [hint](#plain-text) and element components does not matter.
@@ -1472,6 +1549,24 @@ element | * | One of [radio-buttons](#radio-buttons), [checkboxes](#checkboxes),
   :type :plain_text_input,
   :placeholder {:type :plain_text, :text "Greeting", :emoji true}},
  :hint {:type :plain_text, :text "Do something radical", :emoji true}}
+
+; Input
+[:input
+  [:label "Some input"]
+  [:hint "Do something radical"]
+  [:plain-text-input {:action_id "A123"
+                      :initial_value "hello"}
+    [:placeholder "Greeting"]]]
+
+; Output
+{:type :input,
+ :label {:type :plain_text, :text "Some input", :emoji true},
+ :element
+ {:action_id "A123",
+  :initial_value "hello",
+  :type :plain_text_input,
+  :placeholder {:type :plain_text, :text "Greeting", :emoji true}},
+ :hint {:type :plain_text, :text "Do something radical", :emoji true}}
 ```
 
 ### section
@@ -1483,6 +1578,8 @@ Renders a [section block](https://api.slack.com/reference/block-kit/blocks#secti
 ```clojure
 (s/describe :block/props)
 ```
+
+Props for `:section` are optional.
 
 **Children**
 
@@ -1503,6 +1600,13 @@ accessory| | One of [button](#button), [checkboxes](#checkboxes), [datepicker](#
 
 ; Output
 {:block_id "B123", :type :section, :text {:type :plain_text, :text "A section"}}
+
+; Input
+[:section
+  [:text "A section"]]
+
+; Output
+{:type :section, :text {:type :plain_text, :text "A section"}}
 
 ; Input
 [:section {:block_id "B123"}

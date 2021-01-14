@@ -1,7 +1,8 @@
 (ns thlack.surfs
   "A hiccup-like interface for creating views in Slack applications via blocks.
    https://api.slack.com/reference/block-kit/blocks"
-  (:require [thlack.surfs.render :as surfs.render]))
+  (:require [thlack.surfs.render :as surfs.render]
+            [thlack.surfs.props :as props]))
 
 (defn render
   "Render one or more surfs components into a data structure
@@ -40,12 +41,14 @@
   ```
   Note: The returned data structure must be serialized to json (not included) before being sent to Slack."
   [& components]
-  (map surfs.render/render components))
+  (->> components
+       (map surfs.render/render)
+       (props/flatten-children)))
 
 (defn- build-defc-body
   [[bindings & body]]
   `(~bindings
-    (first (thlack.surfs/render ~@body))))
+    (thlack.surfs/render ~@body)))
 
 (defn- defc'
   "Helper for generating the body of defc"

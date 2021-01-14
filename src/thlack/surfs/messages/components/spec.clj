@@ -9,7 +9,7 @@
 (s/def :message/props
   (s/keys :opt-un [:message/thread_ts :message/mrkdwn]))
 
-(s/def :message/child (s/or :block ::blocks.spec/block))
+(s/def :message/child (s/or :block ::blocks.spec/block :text :message/text))
 
 (s/def :message/children
   (s/with-gen

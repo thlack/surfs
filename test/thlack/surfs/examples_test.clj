@@ -2,6 +2,7 @@
   "Way less cool unit test suite, but it's useful for seeing surfs
    in action :)"
   (:require [clojure.test :refer [is]]
+            [thlack.surfs :refer [defc]]
             [thlack.surfs.test-utils :refer [defrendertest]]))
 
 ;;; Composition
@@ -874,3 +875,24 @@
                                     :text "Click Me!"}}
             :text      {:type :plain_text
                         :text "Hello"}} element))))
+
+;;; Misc
+
+(defn render-sibling
+  [n]
+  [:divider {:block_id (str "sibling_" n)}])
+
+(defc super-interesting-component
+  [siblings]
+  [:header "Header"]
+  (map render-sibling siblings))
+
+(defrendertest block-with-sequence-of-siblings
+  [super-interesting-component [1 2]]
+  (fn [[blocks]]
+    (let [expected [{:type :header
+                     :text {:type :plain_text
+                            :text "Header"}}
+                    {:type :divider :block_id "sibling_1"}
+                    {:type :divider :block_id "sibling_2"}]]
+      (is (= blocks expected)))))

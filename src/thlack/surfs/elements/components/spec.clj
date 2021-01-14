@@ -71,7 +71,7 @@
   (gen/fmap
    (fn [select]
      (-> select
-         (select-keys [:options :option-groups])
+         (select-keys [:options :option_groups])
          (vals)
          (flatten)
          (into

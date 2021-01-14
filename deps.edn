@@ -1,10 +1,10 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.10.1"}
-        expound/expound     {:mvn/version "0.8.6"}}
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}}
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}
-                      metosin/jsonista       {:mvn/version "0.2.7"}}}
+                      metosin/jsonista       {:mvn/version "0.2.7"}
+                      expound/expound        {:mvn/version "0.8.6"}}}
   
   :runner
   {:extra-deps {com.cognitect/test-runner

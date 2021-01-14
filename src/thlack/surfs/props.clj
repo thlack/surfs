@@ -1,6 +1,5 @@
 (ns ^:no-doc thlack.surfs.props
   (:require [clojure.spec.alpha :as s]
-            [expound.alpha :as expound]
             [thlack.surfs.blocks.spec]))
 
 ;;; Prop helpers
@@ -36,8 +35,9 @@
   [x spec]
   `(let [conformed# (s/conform ~spec ~x)]
      (if (s/invalid? conformed#)
-       (throw (ex-info (expound/expound-str ~spec ~x)
-                       (or (s/explain ~spec ~x) {:explained? false})))
+       (do
+         (s/assert ~spec ~x)
+         nil)
        conformed#)))
 
 (defn- detag

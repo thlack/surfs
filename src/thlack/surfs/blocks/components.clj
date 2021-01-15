@@ -3,6 +3,7 @@
    https://api.slack.com/reference/block-kit/blocks"
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.blocks.spec :as blocks.spec]
+            [thlack.surfs.blocks.spec.section :as section.spec]
             [thlack.surfs.blocks.components.spec :as bc.spec]
             [thlack.surfs.composition.components :as comp]
             [thlack.surfs.composition.spec :as comp.spec]
@@ -37,14 +38,14 @@
      [:placeholder \"Select channel\"]]]
    ```"
   [& args]
-  (let [[props & children] (props/parse-args args :block/props*)]
+  (let [[props & children] (props/parse-args args ::bc.spec/block.props*)]
     (-> props
         (assoc :elements (props/flatten-children children) :type :actions)
         (validated ::blocks.spec/actions))))
 
 (s/fdef actions
-  :args (s/alt :props-and-children (s/cat :props :block/props :children :actions/children)
-               :children (s/cat :children :actions/children))
+  :args (s/alt :props-and-children (s/cat :props ::bc.spec/block.props :children ::bc.spec/actions.children)
+               :children (s/cat :children ::bc.spec/actions.children))
   :ret ::blocks.spec/actions)
 
 (defn fields
@@ -73,7 +74,7 @@
   (if-not (some? x)
     props
     (let [child   (if (and (seq x) (not (map? x))) (first x) x)
-          [tag _] (s/conform :section/child child)]
+          [tag _] (s/conform ::bc.spec/section.child child)]
       (cond-> props
         (= :text tag) (assoc :text child)
         (= :accessory tag) (assoc :accessory child)
@@ -110,51 +111,51 @@
       [:text \"This is irreversible!\"]]]]
    ```"
   [& args]
-  (let [[props & children] (props/parse-args args :block/props*)]
+  (let [[props & children] (props/parse-args args ::bc.spec/block.props*)]
     (reduce with-section-child (assoc props :type :section) children)))
 
 (s/fdef section
-  :args (s/alt :props-and-text   (s/cat :props :block/props
-                                        :text :section/text)
-               :props-and-fields (s/cat :props :block/props
+  :args (s/alt :props-and-text   (s/cat :props ::bc.spec/block.props
+                                        :text ::section.spec/text)
+               :props-and-fields (s/cat :props ::bc.spec/block.props
                                         :fields ::blocks.spec/fields)
-               :props-and-text-and-accessory (s/cat :props :block/props
-                                                    :text :section/text
-                                                    :accessory :section/accessory)
-               :props-and-accessory-and-text (s/cat :props :block/props
-                                                    :accessory :section/accessory
-                                                    :text :section/text)
-               :props-and-fields-and-accessory (s/cat :props :block/props
+               :props-and-text-and-accessory (s/cat :props ::bc.spec/block.props
+                                                    :text ::section.spec/text
+                                                    :accessory ::section.spec/accessory)
+               :props-and-accessory-and-text (s/cat :props ::bc.spec/block.props
+                                                    :accessory ::section.spec/accessory
+                                                    :text ::section.spec/text)
+               :props-and-fields-and-accessory (s/cat :props ::bc.spec/block.props
                                                       :fields ::blocks.spec/fields
-                                                      :accessory :section/accessory)
-               :props-and-accessory-and-fields (s/cat :props :block/props
-                                                      :accessory :section/accessory
+                                                      :accessory ::section.spec/accessory)
+               :props-and-accessory-and-fields (s/cat :props ::bc.spec/block.props
+                                                      :accessory ::section.spec/accessory
                                                       :fields ::blocks.spec/fields)
-               :props-and-text-and-fields (s/cat :props :block/props
-                                                 :text :section/text
+               :props-and-text-and-fields (s/cat :props ::bc.spec/block.props
+                                                 :text ::section.spec/text
                                                  :fields ::blocks.spec/fields)
-               :props-and-fields-and-text (s/cat :props :block/props
+               :props-and-fields-and-text (s/cat :props ::bc.spec/block.props
                                                  :fields ::blocks.spec/fields
-                                                 :text :section/text)
+                                                 :text ::section.spec/text)
 
-               :text   (s/cat :text :section/text)
+               :text   (s/cat :text ::section.spec/text)
                :fields (s/cat :fields ::blocks.spec/fields)
-               :text-and-accessory (s/cat :text :section/text
-                                          :accessory :section/accessory)
-               :accessory-and-text (s/cat :accessory :section/accessory
-                                          :text :section/text)
+               :text-and-accessory (s/cat :text ::section.spec/text
+                                          :accessory ::section.spec/accessory)
+               :accessory-and-text (s/cat :accessory ::section.spec/accessory
+                                          :text ::section.spec/text)
                :fields-and-accessory (s/cat :fields ::blocks.spec/fields
-                                            :accessory :section/accessory)
-               :accessory-and-fields (s/cat :accessory :section/accessory
+                                            :accessory ::section.spec/accessory)
+               :accessory-and-fields (s/cat :accessory ::section.spec/accessory
                                             :fields ::blocks.spec/fields)
-               :text-and-fields (s/cat :text :section/text
+               :text-and-fields (s/cat :text ::section.spec/text
                                        :fields ::blocks.spec/fields)
                :fields-and-text (s/cat :fields ::blocks.spec/fields
-                                       :text :section/text)
-               :all (s/cat :props :block/props
-                           :text :section/text
+                                       :text ::section.spec/text)
+               :all (s/cat :props ::bc.spec/block.props
+                           :text ::section.spec/text
                            :fields ::blocks.spec/fields
-                           :accessory :section/accessory))
+                           :accessory ::section.spec/accessory))
   :ret ::blocks.spec/section)
 
 (defn context
@@ -176,14 +177,14 @@
     [:text \"This is some text\"]]
    ```"
   [& args]
-  (let [[props & children] (props/parse-args args :block/props*)]
+  (let [[props & children] (props/parse-args args ::bc.spec/block.props*)]
     (-> props
         (assoc :elements (props/flatten-children children) :type :context)
         (validated ::blocks.spec/context))))
 
 (s/fdef context
-  :args (s/alt :props-and-children (s/cat :props :block/props :children :context/children)
-               :children (s/cat :children :context/children))
+  :args (s/alt :props-and-children (s/cat :props ::bc.spec/block.props :children ::bc.spec/context.children)
+               :children (s/cat :children ::bc.spec/context.children))
   :ret ::blocks.spec/context)
 
 (defn divider
@@ -200,7 +201,7 @@
    (divider {})))
 
 (s/fdef divider
-  :args (s/cat :props (s/? :block/props))
+  :args (s/cat :props (s/? ::bc.spec/block.props))
   :ret ::blocks.spec/divider)
 
 (defn header
@@ -226,8 +227,8 @@
    (header {} text)))
 
 (s/fdef header
-  :args (s/alt :props-and-children (s/cat :props :block/props :text :header-child/text)
-               :children (s/cat :text :header-child/text))
+  :args (s/alt :props-and-children (s/cat :props ::bc.spec/block.props :text :thlack.surfs.blocks.components.spec.header-child/text)
+               :children (s/cat :text :thlack.surfs.blocks.components.spec.header-child/text))
   :ret  ::blocks.spec/header)
 
 (defn image
@@ -251,7 +252,7 @@
    (image props nil)))
 
 (s/fdef image
-  :args (s/cat :props :image/props :title (s/? :image-child/title))
+  :args (s/cat :props ::bc.spec/image.props :title (s/? :thlack.surfs.blocks.components.spec.image-child/title))
   :ret ::blocks.spec/image)
 
 (defn input
@@ -284,10 +285,10 @@
   (let [[props label & children] (props/parse-args args bc.spec/input-props?)]
     (-> (assoc props :type :input)
         (assoc :label (comp/text label))
-        (props/with-children children :input/child)
+        (props/with-children children ::bc.spec/input.child)
         (validated ::blocks.spec/input))))
 
 (s/fdef input
-  :args (s/alt :props-and-children (s/cat :props :input/props :label :input-child/label :children :input/children)
-               :children (s/cat :label :input-child/label :children :input/children))
+  :args (s/alt :props-and-children (s/cat :props ::bc.spec/input.props :label :thlack.surfs.blocks.components.spec.input-child/label :children ::bc.spec/input.children)
+               :children (s/cat :label :thlack.surfs.blocks.components.spec.input-child/label :children ::bc.spec/input.children))
   :ret  ::blocks.spec/input)

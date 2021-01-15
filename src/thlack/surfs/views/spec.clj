@@ -1,35 +1,22 @@
 (ns ^:no-doc thlack.surfs.views.spec
   (:require [clojure.spec.alpha :as s]
-            [thlack.surfs.strings.spec :as strings.spec :refer [deftext]]
-            [thlack.surfs.composition.spec :as comp.spec]
-            [thlack.surfs.blocks.spec :as blocks.spec]))
+            [thlack.surfs.strings.spec :as strings.spec]
+            [thlack.surfs.blocks.spec :as blocks.spec]
+            [thlack.surfs.views.spec.modal :as modal]
+            [thlack.surfs.views.spec.home :as home]))
 
-(s/def :modal/type #{:modal})
+(s/def ::blocks (s/coll-of ::blocks.spec/block :into [] :max-count 100 :min-count 1 :gen-max 3))
 
-(s/def :home/type #{:home})
+(s/def ::private_metadata (strings.spec/with-max-gen
+                            ::strings.spec/string
+                            3000))
 
-(deftext :modal/title ::comp.spec/plain-text 24)
+(s/def ::callback_id (strings.spec/with-max-gen
+                       ::strings.spec/string
+                       255))
 
-(s/def :view/blocks (s/coll-of ::blocks.spec/block :into [] :max-count 100 :min-count 1 :gen-max 3))
+(s/def ::external_id ::strings.spec/string)
 
-(deftext :modal/close ::comp.spec/plain-text 24)
+(s/def ::home (s/keys :req-un [::home/type ::blocks] :opt-un [::private_metadata ::callback_id ::external_id]))
 
-(deftext :modal/submit ::comp.spec/plain-text 24)
-
-(s/def :view/private_metadata (strings.spec/with-max-gen
-                                ::strings.spec/string
-                                3000))
-
-(s/def :view/callback_id (strings.spec/with-max-gen
-                           ::strings.spec/string
-                           255))
-
-(s/def :modal/clear_on_close boolean?)
-
-(s/def :modal/notify_on_close boolean?)
-
-(s/def :view/external_id ::strings.spec/string)
-
-(s/def ::home (s/keys :req-un [:home/type :view/blocks] :opt-un [:view/private_metadata :view/callback_id :view/external_id]))
-
-(s/def ::modal (s/keys :req-un [:modal/type :view/blocks :modal/title] :opt-un [:modal/close :modal/submit :view/private_metadata :view/callback_id :modal/clear_on_close :modal/notify_on_close :view/external_id]))
+(s/def ::modal (s/keys :req-un [::modal/type ::blocks ::modal/title] :opt-un [::modal/close ::modal/submit ::private_metadata ::callback_id ::modal/clear_on_close ::modal/notify_on_close ::external_id]))

@@ -1,4 +1,4 @@
-(ns thlack.surfs.elements.spec.checkboxes
+(ns ^:no-doc thlack.surfs.elements.spec.checkboxes
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec :as comp.spec]))
 

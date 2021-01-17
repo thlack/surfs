@@ -1,4 +1,4 @@
-(ns thlack.surfs.blocks.spec.file
+(ns ^:no-doc thlack.surfs.blocks.spec.file
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.strings.spec :as strings.spec]))
 

@@ -1,4 +1,4 @@
-(ns thlack.surfs.blocks.spec.input
+(ns ^:no-doc thlack.surfs.blocks.spec.input
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec :as comp.spec]
             [thlack.surfs.elements.spec :as elements.spec]

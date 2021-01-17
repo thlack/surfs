@@ -1,4 +1,4 @@
-(ns thlack.surfs.elements.spec.image
+(ns ^:no-doc thlack.surfs.elements.spec.image
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.strings.spec :as strings.spec]))
 

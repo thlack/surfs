@@ -1,4 +1,4 @@
-(ns thlack.surfs.elements.spec.select
+(ns ^:no-doc thlack.surfs.elements.spec.select
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec :as comp.spec]
             [thlack.surfs.strings.spec :refer [deftext]]))

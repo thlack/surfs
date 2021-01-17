@@ -1,4 +1,4 @@
-(ns thlack.surfs.composition.spec.option-group
+(ns ^:no-doc thlack.surfs.composition.spec.option-group
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec.plain-text :as plain-text]
             [thlack.surfs.composition.spec.option :as option]

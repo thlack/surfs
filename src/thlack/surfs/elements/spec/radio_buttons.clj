@@ -1,4 +1,4 @@
-(ns thlack.surfs.elements.spec.radio-buttons
+(ns ^:no-doc thlack.surfs.elements.spec.radio-buttons
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec :as comp.spec]))
 

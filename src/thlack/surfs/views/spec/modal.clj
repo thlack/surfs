@@ -1,4 +1,4 @@
-(ns thlack.surfs.views.spec.modal
+(ns ^:no-doc thlack.surfs.views.spec.modal
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec :as comp.spec]
             [thlack.surfs.strings.spec :refer [deftext]]))

@@ -1,4 +1,4 @@
-(ns thlack.surfs.composition.spec.confirm
+(ns ^:no-doc thlack.surfs.composition.spec.confirm
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec.plain-text :as plain-text]
             [thlack.surfs.composition.spec.mrkdwn :as mrkdwn]

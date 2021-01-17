@@ -1,4 +1,4 @@
-(ns thlack.surfs.composition.spec.conversation
+(ns ^:no-doc thlack.surfs.composition.spec.conversation
   (:require [clojure.spec.alpha :as s]))
 
 (s/def ::include (s/coll-of #{:im :mpim :private :public} :distinct true :into [] :gen-max 4 :min-count 1))

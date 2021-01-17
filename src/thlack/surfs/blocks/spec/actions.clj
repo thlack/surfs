@@ -1,4 +1,4 @@
-(ns thlack.surfs.blocks.spec.actions
+(ns ^:no-doc thlack.surfs.blocks.spec.actions
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.elements.spec :as elements.spec]))
 

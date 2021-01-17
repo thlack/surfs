@@ -1,4 +1,4 @@
-(ns thlack.surfs.composition.spec.mrkdwn
+(ns ^:no-doc thlack.surfs.composition.spec.mrkdwn
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec.text :as text]))
 

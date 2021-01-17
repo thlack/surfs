@@ -1,4 +1,4 @@
-(ns thlack.surfs.elements.spec.overflow
+(ns ^:no-doc thlack.surfs.elements.spec.overflow
   (:require [clojure.spec.alpha :as s]
             [thlack.surfs.composition.spec :as comp.spec]
             [thlack.surfs.strings.spec :as strings.spec]))

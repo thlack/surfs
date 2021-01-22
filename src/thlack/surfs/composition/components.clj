@@ -138,7 +138,7 @@
    [:option {:value \"1\" :description \"Oh hello\"} \"Label\"]
    ```
    
-   Options used in elements supporting initial_option(s), also supported a :selected?
+   Options used in elements supporting initial_option(s), also support a :selected?
    property."
   [props txt]
   (-> props

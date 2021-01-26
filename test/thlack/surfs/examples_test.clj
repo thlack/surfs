@@ -845,13 +845,16 @@
 
   [:message {:thread_ts "107"} [:divider]]
 
+  [:message [:header "text"] [:header "text"]]
+
   [:message {:thread_ts "107"} "Fallback" [:divider]]
 
-  (fn [[props-and-text just-text no-props-text-and-blocks props-and-blocks all]]
+  (fn [[props-and-text just-text no-props-text-and-blocks props-and-blocks multiple-blocks-no-props all]]
     (is (= {:thread_ts "107" :text "Text"} props-and-text))
     (is (= {:text "Just text"} just-text))
     (is (= {:text "Fallback" :blocks [{:type :divider}]} no-props-text-and-blocks))
     (is (= {:thread_ts "107" :blocks [{:type :divider}]} props-and-blocks))
+    (is (= {:blocks [{:type :header :text {:type :plain_text :text "text"}} {:type :header :text {:type :plain_text :text "text"}}]} multiple-blocks-no-props))
     (is (= {:thread_ts "107" :text "Fallback" :blocks [{:type :divider}]} all))))
 
 ;;; Custom components 

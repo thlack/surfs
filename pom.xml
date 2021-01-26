@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>thlack</groupId>
   <artifactId>surfs</artifactId>
-  <version>2021.01.14</version>
+  <version>2021.01.25</version>
   <name>thlack.surfs</name>
   <description>Surfs is a library for creating user interfaces in Slack applications. It aims to make creating Slack surfaces enjoyable. It follows the spirit of libraries like hiccup, reagent, and rum.</description>
   <url>https://github.com/thlack/surfs</url>

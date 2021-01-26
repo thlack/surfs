@@ -45,7 +45,7 @@
      [:text \"Text two\"]]]
    ```"
   [& args]
-  (let [[props & children] (props/parse-args args)
+  (let [[props & children] (props/parse-args args mc.spec/message-props?)
         text (some #(if (string? %) % nil) children)
         blocks (filter (complement string?) children)]
     (-> props

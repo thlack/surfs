@@ -63,7 +63,7 @@ Renders to a [text object](https://api.slack.com/reference/block-kit/composition
 **Props**:
 
 ```clojure
-(s/describe :thlack.surfs.props.spec/text)
+(thlack.surfs.repl/props :text)
 ```
 
 **Usage**:
@@ -162,7 +162,7 @@ Renders a [confirmation dialog object](https://api.slack.com/reference/block-kit
 **Props**:
 
 ```clojure
-(s/describe :confirm/props)
+(thlack.surfs.repl/props :confirm)
 ```
 
 **Children**:
@@ -198,7 +198,7 @@ Renders an [option object](https://api.slack.com/reference/block-kit/composition
 **Props**
 
 ```clojure
-(s/describe :option/props)
+(thlack.surfs.repl/props :option)
 ```
 
 **Children**
@@ -257,7 +257,7 @@ Renders a [button element](https://api.slack.com/reference/block-kit/block-eleme
 **Props**:
 
 ```clojure
-(s/describe :button/props)
+(thlack.surfs.repl/props :button)
 ```
 
 The `:button` component can safely omit the `:action_id` prop (and thus all props). If `:action_id` is not provided, a uuid string will be generated. This simplifies cases where the button action_id may be ignored - as is the case with buttons that are used for opening urls.
@@ -317,7 +317,7 @@ Renders a [checkbox group](https://api.slack.com/reference/block-kit/block-eleme
 **Props**
 
 ```clojure
-(s/describe :checkboxes/props)
+(thlack.surfs.repl/props :checkboxes)
 ```
 
 **Children**
@@ -372,7 +372,7 @@ Renders a [date picker element](https://api.slack.com/reference/block-kit/block-
 **Props**
 
 ```clojure
-(s/describe :datepicker/props)
+(thlack.surfs.repl/props :datepicker)
 ```
 
 **Children**
@@ -421,7 +421,7 @@ Renders an [image element](https://api.slack.com/reference/block-kit/block-eleme
 **Props**
 
 ```clojure
-(s/describe :img/props)
+(thlack.surfs.repl/props :img)
 ```
 
 **Usage**
@@ -441,8 +441,7 @@ Renders a [static multi select element](https://api.slack.com/reference/block-ki
 **Props**
 
 ```clojure
-(s/describe :multi-select/props)
-```
+(thlack.surfs.repl/props :multi-static-select)
 
 **Children**
 
@@ -539,7 +538,7 @@ Renders an [external multi select element](https://api.slack.com/reference/block
 **Props**
 
 ```clojure
-(s/describe :multi-external-select/props)
+(thlack.surfs.repl/props :multi-external-select)
 ```
 
 **Children**
@@ -601,7 +600,7 @@ Renders a [users multi select element](https://api.slack.com/reference/block-kit
 **Props**
 
 ```clojure
-(s/describe :multi-users-select/props)
+(thlack.surfs.repl/props :multi-users-select)
 ```
 
 **Children**
@@ -652,7 +651,7 @@ Renders a [conversation multi select element](https://api.slack.com/reference/bl
 **Props**
 
 ```clojure
-(s/describe :multi-conversations-select/props)
+(thlack.surfs.repl/props :multi-conversations-select)
 ```
 
 **Children**
@@ -719,7 +718,7 @@ Renders a [channel multi select element](https://api.slack.com/reference/block-k
 **Props**
 
 ```clojure
-(s/describe :multi-channels-select/props)
+(thlack.surfs.repl/props :multi-channels-select)
 ```
 
 **Children**
@@ -770,7 +769,7 @@ Renders an [overflow menu element](https://api.slack.com/reference/block-kit/blo
 **Props**
 
 ```clojure
-(s/describe :overflow/props)
+(thlack.surfs.repl/props :overflow)
 ```
 
 The `:overflow` component can safely omit the `:action_id` prop (and thus all props). If `:action_id` is not provided, a uuid string will be generated. This simplifies cases where the overflow action_id may be ignored - as is the case with overflow menus containing only urls.
@@ -843,7 +842,7 @@ Renders a [plain-text input element](https://api.slack.com/reference/block-kit/b
 **Props**
 
 ```clojure
-(s/describe :plain-text-input/props)
+(thlack.surfs.repl/props :plain-text-input)
 ```
 
 **Children**
@@ -882,7 +881,7 @@ Renders a [radio button group element](https://api.slack.com/reference/block-kit
 **Props**
 
 ```clojure
-(s/describe :radio-buttons/props)
+(thlack.surfs.repl/props :radio-buttons)
 ```
 
 **Children**
@@ -941,7 +940,7 @@ Renders a [static select element](https://api.slack.com/reference/block-kit/bloc
 **Props**
 
 ```clojure
-(s/describe :static-select/props)
+(thlack.surfs.repl/props :static-select)
 ```
 
 **Children**
@@ -1036,7 +1035,7 @@ Renders an [external select element](https://api.slack.com/reference/block-kit/b
 **Props**
 
 ```clojure
-(s/describe :external-select/props)
+(thlack.surfs.repl/props :external-select)
 ```
 
 **Children**
@@ -1092,7 +1091,7 @@ Renders a [users select element](https://api.slack.com/reference/block-kit/block
 **Props**
 
 ```clojure
-(s/describe :users-select/props)
+(thlack.surfs.repl/props :users-select)
 ```
 
 **Children**
@@ -1141,7 +1140,7 @@ Renders a [conversation select element](https://api.slack.com/reference/block-ki
 **Props**
 
 ```clojure
-(s/describe :conversations-select/props)
+(thlack.surfs.repl/props :conversations-select)
 ```
 
 **Children**
@@ -1204,7 +1203,7 @@ Renders a [channel select element](https://api.slack.com/reference/block-kit/blo
 **Props**
 
 ```clojure
-(s/describe :channels-select/props)
+(thlack.surfs.repl/props :channels-select)
 ```
 
 **Children**
@@ -1253,7 +1252,7 @@ Renders a [time picker element](https://api.slack.com/reference/block-kit/block-
 **Props**
 
 ```clojure
-(s/describe :timepicker/props)
+(thlack.surfs.repl/props :timepicker)
 ```
 
 **Children**
@@ -1306,7 +1305,7 @@ Renders an [actions block](https://api.slack.com/reference/block-kit/blocks#acti
 **Props**
 
 ```clojure
-(s/describe :block/props)
+(thlack.surfs.repl/props :actions)
 ```
 
 Props for `:actions` are optional.
@@ -1377,7 +1376,7 @@ Renders a [context block](https://api.slack.com/reference/block-kit/blocks#conte
 **Props**
 
 ```clojure
-(s/describe :block/props)
+(thlack.surfs.repl/props :context)
 ```
 
 Props for `:context` are optional.
@@ -1422,7 +1421,7 @@ Renders a [divider block](https://api.slack.com/reference/block-kit/blocks#divid
 **Props**
 
 ```clojure
-(s/describe :block/props)
+(thlack.surfs.repl/props :divider)
 ```
 
 Props for `:divider` are optional.
@@ -1444,7 +1443,7 @@ Renders a [header block](https://api.slack.com/reference/block-kit/blocks#header
 **Props**
 
 ```clojure
-(s/describe :block/props)
+(thlack.surfs.repl/props :header)
 ```
 
 Props for `:header` are optional.
@@ -1478,7 +1477,7 @@ Renders an [image block](https://api.slack.com/reference/block-kit/blocks#image)
 **Props**
 
 ```clojure
-(s/describe :image/props)
+(thlack.surfs.repl/props :image)
 ```
 
 **Children**
@@ -1511,7 +1510,7 @@ Renders an [input block](https://api.slack.com/reference/block-kit/blocks#input)
 **Props**
 
 ```clojure
-(s/describe :input/props)
+(thlack.surfs.repl/props :input)
 ```
 
 Props for `:input` are optional.
@@ -1576,7 +1575,7 @@ Renders a [section block](https://api.slack.com/reference/block-kit/blocks#secti
 **Props**
 
 ```clojure
-(s/describe :block/props)
+(thlack.surfs.repl/props :section)
 ```
 
 Props for `:section` are optional.
@@ -1693,7 +1692,7 @@ Renders a [modal surface](https://api.slack.com/surfaces/modals/using).
 **Props**
 
 ```clojure
-(s/describe :modal/props)
+(thlack.surfs.repl/props :modal)
 ```
 
 **Children**
@@ -1730,7 +1729,7 @@ Renders a [home tab surface](https://api.slack.com/surfaces/tabs/using).
 **Props**
 
 ```clojure
-(s/describe :view/props)
+(thlack.surfs.repl/props :home)
 ```
 
 **Children**
@@ -1762,7 +1761,7 @@ blocks | * (requires at least one block) | One or more of [actions](#actions), [
 **Props**
 
 ```clojure
-(s/describe :message/props)
+(thlack.surfs.repl/props :message)
 ```
 
 * Note: Since the message component renders to a flat structure, additional props can be included (this should simplify using messages in their various contexts).

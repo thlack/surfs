@@ -6,7 +6,7 @@
             [thlack.surfs.props :as props]
             [thlack.surfs.validation :refer [validated]]
             [thlack.surfs.elements.spec :as elements.spec]
-            [thlack.surfs.elements.components.spec]
+            [thlack.surfs.elements.components.spec :as ec.spec]
             [thlack.surfs.composition.components :as comp]
             [thlack.surfs.composition.spec])
   (:import [java.util UUID]))
@@ -81,13 +81,13 @@
   (let [[props & children] (props/parse-args args)]
     (-> (assoc props :type :button)
         (with-action-id)
-        (props/with-children children :button/child)
+        (props/with-children children ::ec.spec/button.child)
         (comp/with-text #{:text})
         (validated ::elements.spec/button))))
 
 (s/fdef button
-  :args (s/alt :props-and-children (s/cat :props :button/props :children :button/children)
-               :children (s/cat :children :button/children))
+  :args (s/alt :props-and-children (s/cat :props ::ec.spec/button.props :children ::ec.spec/button.children)
+               :children (s/cat :children ::ec.spec/button.children))
   :ret ::elements.spec/button)
 
 (defn checkboxes
@@ -102,13 +102,13 @@
    ```"
   [props & children]
   (-> (assoc props :type :checkboxes)
-      (props/with-children children :checkboxes/child)
+      (props/with-children children ::ec.spec/checkboxes.child)
       (assoc-initial-options)
       (validated ::elements.spec/checkboxes)
       (conform-options)))
 
 (s/fdef checkboxes
-  :args (s/cat :props :checkboxes/props :children :checkboxes/children)
+  :args (s/cat :props ::ec.spec/checkboxes.props :children ::ec.spec/checkboxes.children)
   :ret ::elements.spec/checkboxes)
 
 (defn datepicker
@@ -122,11 +122,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :datepicker)
-      (props/with-children children :datepicker/child)
+      (props/with-children children ::ec.spec/datepicker.child)
       (validated ::elements.spec/datepicker)))
 
 (s/fdef datepicker
-  :args (s/cat :props :datepicker/props :children (s/* :datepicker/child))
+  :args (s/cat :props ::ec.spec/datepicker.props :children (s/* ::ec.spec/datepicker.child))
   :ret ::elements.spec/datepicker)
 
 (defn timepicker
@@ -140,11 +140,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :timepicker)
-      (props/with-children children :timepicker/child)
+      (props/with-children children ::ec.spec/timepicker.child)
       (validated ::elements.spec/timepicker)))
 
 (s/fdef timepicker
-  :args (s/cat :props :timepicker/props :children (s/* :timepicker/child))
+  :args (s/cat :props ::ec.spec/timepicker.props :children (s/* ::ec.spec/timepicker.child))
   :ret ::elements.spec/timepicker)
 
 (defn img
@@ -165,7 +165,7 @@
       (validated ::elements.spec/image)))
 
 (s/fdef img
-  :args (s/cat :props :img/props)
+  :args (s/cat :props ::ec.spec/img.props)
   :ret ::elements.spec/image)
 
 (defn multi-static-select
@@ -197,13 +197,13 @@
    ```"
   [props & children]
   (-> (assoc props :type :multi_static_select)
-      (props/with-children children :multi-static-select/child)
+      (props/with-children children ::ec.spec/multi-static-select.child)
       (assoc-initial-options)
       (validated ::elements.spec/multi-static-select)
       (conform-options)))
 
 (s/fdef multi-static-select
-  :args (s/cat :props :multi-select/props :children :multi-static-select/children)
+  :args (s/cat :props ::ec.spec/multi-select.props :children ::ec.spec/multi-static-select.children)
   :ret  ::elements.spec/multi-static-select)
 
 (defn multi-external-select
@@ -221,7 +221,7 @@
    ```"
   [props & children]
   (-> (assoc props :type :multi_external_select)
-      (props/with-children children :multi-static-select/child)
+      (props/with-children children ::ec.spec/multi-static-select.child)
       (force-selected)
       (assoc-initial-options)
       (dissoc :option_groups :options)
@@ -229,7 +229,7 @@
       (conform-options)))
 
 (s/fdef multi-external-select
-  :args (s/cat :props :multi-external-select/props :children :multi-static-select/children)
+  :args (s/cat :props ::ec.spec/multi-external-select.props :children ::ec.spec/multi-static-select.children)
   :ret ::elements.spec/multi-external-select)
 
 (defn multi-users-select
@@ -243,11 +243,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :multi_users_select)
-      (props/with-children children :slack-select/child)
+      (props/with-children children ::ec.spec/slack-select.child)
       (validated ::elements.spec/multi-users-select)))
 
 (s/fdef multi-users-select
-  :args (s/cat :props :multi-users-select/props :children :slack-select/children)
+  :args (s/cat :props ::ec.spec/multi-users-select.props :children ::ec.spec/slack-select.children)
   :ret ::elements.spec/multi-users-select)
 
 (defn multi-conversations-select
@@ -267,11 +267,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :multi_conversations_select)
-      (props/with-children children :slack-select/child)
+      (props/with-children children ::ec.spec/slack-select.child)
       (validated ::elements.spec/multi-conversations-select)))
 
 (s/fdef multi-conversations-select
-  :args (s/cat :props :multi-conversations-select/props :children :slack-select/children)
+  :args (s/cat :props ::ec.spec/multi-conversations-select.props :children ::ec.spec/slack-select.children)
   :ret ::elements.spec/multi-conversations-select)
 
 (defn multi-channels-select
@@ -285,11 +285,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :multi_channels_select)
-      (props/with-children children :slack-select/child)
+      (props/with-children children ::ec.spec/slack-select.child)
       (validated ::elements.spec/multi-channels-select)))
 
 (s/fdef multi-channels-select
-  :args (s/cat :props :multi-channels-select/props :children :slack-select/children)
+  :args (s/cat :props ::ec.spec/multi-channels-select.props :children ::ec.spec/slack-select.children)
   :ret ::elements.spec/multi-channels-select)
 
 (defn static-select
@@ -321,13 +321,13 @@
    ```"
   [props & children]
   (-> (assoc props :type :static_select)
-      (props/with-children children :static-select/child)
+      (props/with-children children ::ec.spec/static-select.child)
       (assoc-initial-options)
       (validated ::elements.spec/static-select)
       (conform-options)))
 
 (s/fdef static-select
-  :args (s/cat :props :static-select/props :children :static-select/children)
+  :args (s/cat :props ::ec.spec/static-select.props :children ::ec.spec/static-select.children)
   :ret ::elements.spec/static-select)
 
 (defn external-select
@@ -344,7 +344,7 @@
    ```"
   [props & children]
   (-> (assoc props :type :external_select)
-      (props/with-children children :static-select/child)
+      (props/with-children children ::ec.spec/static-select.child)
       (force-selected)
       (assoc-initial-options)
       (dissoc :options)
@@ -352,7 +352,7 @@
       (conform-options)))
 
 (s/fdef external-select
-  :args (s/cat :props :external-select/props :children :static-select/children)
+  :args (s/cat :props ::ec.spec/external-select.props :children ::ec.spec/static-select.children)
   :ret  ::elements.spec/external-select)
 
 (defn users-select
@@ -366,11 +366,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :users_select)
-      (props/with-children children :slack-select/child)
+      (props/with-children children ::ec.spec/slack-select.child)
       (validated ::elements.spec/users-select)))
 
 (s/fdef users-select
-  :args (s/cat :props :users-select/props :children :slack-select/children)
+  :args (s/cat :props ::ec.spec/users-select.props :children ::ec.spec/slack-select.children)
   :ret ::elements.spec/users-select)
 
 (defn conversations-select
@@ -389,11 +389,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :conversations_select)
-      (props/with-children children :slack-select/child)
+      (props/with-children children ::ec.spec/slack-select.child)
       (validated ::elements.spec/conversations-select)))
 
 (s/fdef conversations-select
-  :args (s/cat :props :conversations-select/props :children :slack-select/children)
+  :args (s/cat :props ::ec.spec/conversations-select.props :children ::ec.spec/slack-select.children)
   :ret ::elements.spec/conversations-select)
 
 (defn channels-select
@@ -407,11 +407,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :channels_select)
-      (props/with-children children :slack-select/child)
+      (props/with-children children ::ec.spec/slack-select.child)
       (validated ::elements.spec/channels-select)))
 
 (s/fdef channels-select
-  :args (s/cat :props :channels-select/props :children :slack-select/children)
+  :args (s/cat :props ::ec.spec/channels-select.props :children ::ec.spec/slack-select.children)
   :ret ::elements.spec/channels-select)
 
 (defn overflow
@@ -436,15 +436,15 @@
     [:option {:value \"3\" :url \"https://duckduckgo.com\"} \"DuckDuckGo\"]]
    ```"
   [& args]
-  (let [[props & children] (props/parse-args args :overflow/props*)]
+  (let [[props & children] (props/parse-args args ::ec.spec/overflow.props*)]
     (-> (assoc props :type :overflow)
         (with-action-id)
-        (props/with-children children :overflow/child)
+        (props/with-children children ::ec.spec/overflow.child)
         (validated ::elements.spec/overflow))))
 
 (s/fdef overflow
-  :args (s/alt :props-and-children (s/cat :props :overflow/props :children :overflow/children)
-               :children (s/cat :children :overflow/children))
+  :args (s/alt :props-and-children (s/cat :props ::ec.spec/overflow.props :children ::ec.spec/overflow.children)
+               :children (s/cat :children ::ec.spec/overflow.children))
   :ret ::elements.spec/overflow)
 
 (defn plain-text-input
@@ -464,11 +464,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :plain_text_input)
-      (props/with-children children :plain-text-input/child)
+      (props/with-children children ::ec.spec/plain-text-input.child)
       (validated ::elements.spec/plain-text-input)))
 
 (s/fdef plain-text-input
-  :args (s/cat :props :plain-text-input/props :children :plain-text-input/children)
+  :args (s/cat :props ::ec.spec/plain-text-input.props :children ::ec.spec/plain-text-input.children)
   :ret ::elements.spec/plain-text-input)
 
 (defn radio-buttons
@@ -484,11 +484,11 @@
    ```"
   [props & children]
   (-> (assoc props :type :radio_buttons)
-      (props/with-children children :radio-buttons/child)
+      (props/with-children children ::ec.spec/radio-buttons.child)
       (assoc-initial-options)
       (validated ::elements.spec/radio-buttons)
       (conform-options)))
 
 (s/fdef radio-buttons
-  :args (s/cat :props :radio-buttons/props :children :radio-buttons/children)
+  :args (s/cat :props ::ec.spec/radio-buttons.props :children ::ec.spec/radio-buttons.children)
   :ret ::elements.spec/radio-buttons)

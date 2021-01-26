@@ -12,50 +12,50 @@
 ;;; a keyword tag to a render function.
 
 (def tags
-  {:home                       views/home
-   :modal                      views/modal
-   :message                    messages/message
-   :actions                    blocks/actions
-   :context                    blocks/context
-   :divider                    blocks/divider
-   :header                     blocks/header
-   :image                      blocks/image
-   :section                    blocks/section
-   :input                      blocks/input
-   :fields                     blocks/fields
-   :button                     elements/button
-   :checkboxes                 elements/checkboxes
-   :datepicker                 elements/datepicker
-   :timepicker                 elements/timepicker
-   :img                        elements/img
-   :multi-external-select      elements/multi-external-select
-   :multi-users-select         elements/multi-users-select
-   :multi-conversations-select elements/multi-conversations-select
-   :multi-channels-select      elements/multi-channels-select
-   :multi-static-select        elements/multi-static-select
-   :static-select              elements/static-select
-   :external-select            elements/external-select
-   :users-select               elements/users-select
-   :conversations-select       elements/conversations-select
-   :channels-select            elements/channels-select
-   :overflow                   elements/overflow
-   :plain-text-input           elements/plain-text-input
-   :radio-buttons              elements/radio-buttons
-   :plain-text                 comp/plain-text
-   :label                      comp/plain-text
-   :placeholder                comp/plain-text
-   :hint                       comp/plain-text
-   :title                      comp/plain-text
-   :confirm                    comp/confirm
-   :option                     comp/option
-   :option-group               comp/option-group
-   :markdown                   comp/markdown
-   :text                       comp/text})
+  {:home                       #'views/home
+   :modal                      #'views/modal
+   :message                    #'messages/message
+   :actions                    #'blocks/actions
+   :context                    #'blocks/context
+   :divider                    #'blocks/divider
+   :header                     #'blocks/header
+   :image                      #'blocks/image
+   :section                    #'blocks/section
+   :input                      #'blocks/input
+   :fields                     #'blocks/fields
+   :button                     #'elements/button
+   :checkboxes                 #'elements/checkboxes
+   :datepicker                 #'elements/datepicker
+   :timepicker                 #'elements/timepicker
+   :img                        #'elements/img
+   :multi-external-select      #'elements/multi-external-select
+   :multi-users-select         #'elements/multi-users-select
+   :multi-conversations-select #'elements/multi-conversations-select
+   :multi-channels-select      #'elements/multi-channels-select
+   :multi-static-select        #'elements/multi-static-select
+   :static-select              #'elements/static-select
+   :external-select            #'elements/external-select
+   :users-select               #'elements/users-select
+   :conversations-select       #'elements/conversations-select
+   :channels-select            #'elements/channels-select
+   :overflow                   #'elements/overflow
+   :plain-text-input           #'elements/plain-text-input
+   :radio-buttons              #'elements/radio-buttons
+   :plain-text                 #'comp/plain-text
+   :label                      #'comp/plain-text
+   :placeholder                #'comp/plain-text
+   :hint                       #'comp/plain-text
+   :title                      #'comp/plain-text
+   :confirm                    #'comp/confirm
+   :option                     #'comp/option
+   :option-group               #'comp/option-group
+   :markdown                   #'comp/markdown
+   :text                       #'comp/text})
 
 (defn- render-tag
   [[head & args]]
   (if-let [render-fn (tags head)]
-    (apply render-fn args)
+    (apply (var-get render-fn) args)
     (apply vector head args)))
 
 (defn- expand

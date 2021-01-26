@@ -6,7 +6,8 @@
             [thlack.surfs.props.spec :as props.spec]
             [thlack.surfs.validation :refer [validated]]
             [thlack.surfs.composition.spec :as comp.spec]
-            [thlack.surfs.composition.components.spec]
+            [thlack.surfs.composition.spec.option-group :as option-group]
+            [thlack.surfs.composition.components.spec :as cc.spec]
             [thlack.surfs.strings.spec :as strings.spec]))
 
 (defn- create-text
@@ -120,7 +121,7 @@
       (validated ::comp.spec/confirm)))
 
 (s/fdef confirm
-  :args (s/cat :props :confirm/props :txt (strings.spec/with-max-gen ::props.spec/text 300))
+  :args (s/cat :props ::cc.spec/confirm.props :txt (strings.spec/with-max-gen ::props.spec/text 300))
   :ret ::comp.spec/confirm)
 
 (defn option
@@ -137,7 +138,7 @@
    [:option {:value \"1\" :description \"Oh hello\"} \"Label\"]
    ```
    
-   Options used in elements supporting initial_option(s), also supported a :selected?
+   Options used in elements supporting initial_option(s), also support a :selected?
    property."
   [props txt]
   (-> props
@@ -146,13 +147,8 @@
       (validated ::comp.spec/option)))
 
 (s/fdef option
-  :args (s/cat :props :option/props :txt (strings.spec/with-max-gen ::props.spec/plain-text 75))
+  :args (s/cat :props ::cc.spec/option.props :txt (strings.spec/with-max-gen ::props.spec/plain-text 75))
   :ret ::comp.spec/option)
-
-(s/def :option-group/children
-  (s/with-gen
-    (s/+ ::comp.spec/option)
-    #(s/gen :option-group/options)))
 
 (defn option-group
   "Provides a way to group options in a select menu or multi-select menu.
@@ -170,5 +166,5 @@
               :options (props/flatten-children children)} ::comp.spec/option-group))
 
 (s/fdef option-group
-  :args (s/cat :label :option-group/label :options :option-group/children)
+  :args (s/cat :label ::option-group/label :options ::cc.spec/option-group.children)
   :ret ::comp.spec/option-group)

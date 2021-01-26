@@ -2,7 +2,23 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [thlack.surfs.composition.spec :as comp.spec]
+            [thlack.surfs.composition.spec.conversation :as conversation]
             [thlack.surfs.elements.spec :as elements.spec]
+            [thlack.surfs.elements.spec.button :as button]
+            [thlack.surfs.elements.spec.datepicker :as datepicker]
+            [thlack.surfs.elements.spec.overflow :as overflow]
+            [thlack.surfs.elements.spec.timepicker :as timepicker]
+            [thlack.surfs.elements.spec.image :as image]
+            [thlack.surfs.elements.spec.conversations-select :as conversations-select]
+            [thlack.surfs.elements.spec.multi-select :as multi-select]
+            [thlack.surfs.elements.spec.external-select :as external-select]
+            [thlack.surfs.elements.spec.multi-conversations-select :as multi-conversations-select]
+            [thlack.surfs.elements.spec.multi-users-select :as multi-users-select]
+            [thlack.surfs.elements.spec.multi-channels-select :as multi-channels-select]
+            [thlack.surfs.elements.spec.users-select :as users-select]
+            [thlack.surfs.elements.spec.select :as select]
+            [thlack.surfs.elements.spec.channels-select :as channels-select]
+            [thlack.surfs.elements.spec.plain-text-input :as plain-text-input]
             [thlack.surfs.props.spec :as props.spec]
             [thlack.surfs.strings.spec :as strings.spec :refer [deftext]]))
 
@@ -16,51 +32,51 @@
 
 ;;; [:button]
 
-(deftext :button-child/text ::props.spec/plain-text 75)
+(deftext :thlack.surfs.elements.components.spec.button-child/text ::props.spec/plain-text 75)
 
-(s/def :button/child
-  (s/or :plain-text :button-child/text
+(s/def ::button.child
+  (s/or :plain-text :thlack.surfs.elements.components.spec.button-child/text
         :confirm    ::comp.spec/confirm))
 
-(s/def :button/children
+(s/def ::button.children
   (s/with-gen
-    (s/* :button/child)
-    #(gen/tuple (s/gen :button-child/text) (s/gen ::comp.spec/confirm))))
+    (s/* ::button.child)
+    #(gen/tuple (s/gen :thlack.surfs.elements.components.spec.button-child/text) (s/gen ::comp.spec/confirm))))
 
-(s/def :button/props (s/keys :opt-un [:button/url :button/style :button/value ::strings.spec/action_id]))
+(s/def ::button.props (s/keys :opt-un [::button/url ::button/style ::button/value ::strings.spec/action_id]))
 
 ;;; [:checkboxes]
 
-(s/def :checkboxes/child
+(s/def ::checkboxes.child
   (s/or :option  ::option
         :confirm ::comp.spec/confirm))
 
-(s/def :checkboxes/children
+(s/def ::checkboxes.children
   (s/with-gen
-    (s/* :checkboxes/child)
+    (s/* ::checkboxes.child)
     #(gen/tuple (s/gen ::option) (s/gen ::option) (s/gen ::comp.spec/confirm))))
 
-(s/def :checkboxes/props (s/keys :req-un [::strings.spec/action_id]))
+(s/def ::checkboxes.props (s/keys :req-un [::strings.spec/action_id]))
 
 ;;; [:datepicker]
 
-(s/def :datepicker/child
+(s/def ::datepicker.child
   (s/or :placeholder ::comp.spec/plain-text
         :confirm     ::comp.spec/confirm))
 
-(s/def :datepicker/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:datepicker/initial_date]))
+(s/def ::datepicker.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::datepicker/initial_date]))
 
 ;;; [:timepicker]
 
-(s/def :timepicker/child
+(s/def ::timepicker.child
   (s/or :placeholder ::comp.spec/plain-text
         :confirm     ::comp.spec/confirm))
 
-(s/def :timepicker/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:timepicker/initial_time]))
+(s/def ::timepicker.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::timepicker/initial_time]))
 
 ;;; [:img]
 
-(s/def :img/props (s/keys :req-un [:image/image_url :image/alt_text]))
+(s/def ::img.props (s/keys :req-un [::image/image_url ::image/alt_text]))
 
 (defn gen-option-parent
   "Returns a generator that yields samples
@@ -80,99 +96,99 @@
 
 ;;; [:multi-static-select]
 
-(s/def :multi-static-select/child
+(s/def ::multi-static-select.child
   (s/or :placeholder  ::comp.spec/plain-text
         :option       ::option
         :option-group ::option-group
         :confirm      ::comp.spec/confirm))
 
-(s/def :multi-static-select/children
+(s/def ::multi-static-select.children
   (s/with-gen
-    (s/* :multi-static-select/child)
+    (s/* ::multi-static-select.child)
     #(gen-option-parent ::elements.spec/multi-static-select [:confirm :placeholder])))
 
-(s/def :multi-select/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:multi-select/max_selected_items]))
+(s/def ::multi-select.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::multi-select/max_selected_items]))
 
-(s/def :slack-select/child
+(s/def ::slack-select.child
   (s/or :placeholder ::comp.spec/plain-text
         :confirm     ::comp.spec/confirm))
 
-(s/def :slack-select/children
+(s/def ::slack-select.children
   (s/with-gen
-    (s/* :slack-select/child)
+    (s/* ::slack-select.child)
     #(gen/tuple (s/gen ::comp.spec/plain-text) (s/gen ::comp.spec/confirm))))
 
 ;;; [:multi-external-select]
 
-(s/def :multi-external-select/props (s/merge :multi-select/props (s/keys :opt-un [:external-select/min_query_length])))
+(s/def ::multi-external-select.props (s/merge ::multi-select.props (s/keys :opt-un [::external-select/min_query_length])))
 
 ;;; [:multi-users-select]
 
-(s/def :multi-users-select/props (s/merge :multi-select/props (s/keys :opt-un [:multi-users-select/initial_users])))
+(s/def ::multi-users-select.props (s/merge ::multi-select.props (s/keys :opt-un [::multi-users-select/initial_users])))
 
 ;;; [:multi-conversations-select]
 
-(s/def :multi-conversations-select/props (s/merge :multi-select/props (s/keys :opt-un [:multi-conversations-select/initial_conversations :conversations-select/default_to_current_conversation :conversation/filter])))
+(s/def ::multi-conversations-select.props (s/merge ::multi-select.props (s/keys :opt-un [::multi-conversations-select/initial_conversations ::conversations-select/default_to_current_conversation ::conversation/filter])))
 
 ;;; [:multi-channels-select]
 
-(s/def :multi-channels-select/props (s/merge :multi-select/props (s/keys :opt-un [:multi-channels-select/initial_channels])))
+(s/def ::multi-channels-select.props (s/merge ::multi-select.props (s/keys :opt-un [::multi-channels-select/initial_channels])))
 
 ;;; [:static-select]
 
-(s/def :static-select/child
+(s/def ::static-select.child
   (s/or :confirm      ::comp.spec/confirm
         :placeholder  ::comp.spec/plain-text
         :option       ::option
         :option-group ::option-group))
 
-(s/def :static-select/children
+(s/def ::static-select.children
   (s/with-gen
-    (s/* :static-select/child)
+    (s/* ::static-select.child)
     #(gen-option-parent ::elements.spec/static-select [:confirm :placeholder])))
 
-(s/def :static-select/props (s/keys :req-un [::strings.spec/action_id]))
+(s/def ::static-select.props (s/keys :req-un [::strings.spec/action_id]))
 
 ;;; [:external-select]
 
-(s/def :external-select/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:external-select/min_query_length]))
+(s/def ::external-select.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::external-select/min_query_length]))
 
 ;;; [:users-select]
 
-(s/def :users-select/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:users-select/initial_user]))
+(s/def ::users-select.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::users-select/initial_user]))
 
 ;;; [:conversations-select]
 
-(s/def :conversations-select/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:conversations-select/initial_conversation :conversations-select/default_to_current_conversation :select/response_url_enabled :conversation/filter]))
+(s/def ::conversations-select.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::conversations-select/initial_conversation ::conversations-select/default_to_current_conversation ::select/response_url_enabled ::conversation/filter]))
 
 ;;; [:channels-select]
 
-(s/def :channels-select/props (s/keys :req-un [::strings.spec/action_id] :opt-un [:select/response_url_enabled :channels-select/initial_channel]))
+(s/def ::channels-select.props (s/keys :req-un [::strings.spec/action_id] :opt-un [::select/response_url_enabled ::channels-select/initial_channel]))
 
 ;;; [:overflow]
 
-(s/def :overflow/child
+(s/def ::overflow.child
   (s/or :confirm ::comp.spec/confirm
-        :option  :overflow/option))
+        :option  ::overflow/option))
 
-(s/def :overflow/children
+(s/def ::overflow.children
   (s/with-gen
-    (s/* :overflow/child)
+    (s/* ::overflow.child)
     #(gen-option-parent ::elements.spec/overflow [:confirm])))
 
-(s/def :overflow/props (s/keys :opt-un [::strings.spec/action_id]))
+(s/def ::overflow.props (s/keys :opt-un [::strings.spec/action_id]))
 
 ; Internal use only - used for validating overflow prop maps that MUST contain action_id in order to be considered props
-(s/def :overflow/props* (s/keys :req-un [::strings.spec/action_id]))
+(s/def ::overflow.props* (s/keys :req-un [::strings.spec/action_id]))
 
 ;;; [:plain-text-input]
 
-(s/def :plain-text-input/child
+(s/def ::plain-text-input.child
   (s/or :placeholder ::comp.spec/plain-text))
 
-(s/def :plain-text-input/children
+(s/def ::plain-text-input.children
   (s/with-gen
-    (s/* :plain-text-input/child)
+    (s/* ::plain-text-input.child)
     #(gen/fmap
       (fn [props]
         (->> (select-keys props [:placeholder])
@@ -180,24 +196,24 @@
              (filter some?)))
       (s/gen ::elements.spec/plain-text-input))))
 
-(s/def :plain-text-input/props* (s/keys :req-un [::strings.spec/action_id] :opt-un [:plain-text-input/initial_value :plain-text-input/multiline :plain-text-input/min_length :plain-text-input/max_length ::comp.spec/dispatch_action_config]))
+(s/def ::plain-text-input.props* (s/keys :req-un [::strings.spec/action_id] :opt-un [::plain-text-input/initial_value ::plain-text-input/multiline ::plain-text-input/min_length ::plain-text-input/max_length ::comp.spec/dispatch_action_config]))
 
-(s/def :plain-text-input/props (s/with-gen
-                                 :plain-text-input/props*
-                                 #(gen/fmap
-                                   (fn [props]
-                                     (select-keys props [:action_id :initial_value :multiline :min_length :max_length :dispatch_action_config]))
-                                   (s/gen ::elements.spec/plain-text-input))))
+(s/def ::plain-text-input.props (s/with-gen
+                                  ::plain-text-input.props*
+                                  #(gen/fmap
+                                    (fn [props]
+                                      (select-keys props [:action_id :initial_value :multiline :min_length :max_length :dispatch_action_config]))
+                                    (s/gen ::elements.spec/plain-text-input))))
 
 ;;; [:radio-buttons]
 
-(s/def :radio-buttons/child
+(s/def ::radio-buttons.child
   (s/or :option  ::comp.spec/option
         :confirm ::comp.spec/confirm))
 
-(s/def :radio-buttons/children
+(s/def ::radio-buttons.children
   (s/with-gen
-    (s/* :radio-buttons/child)
+    (s/* ::radio-buttons.child)
     #(gen-option-parent ::elements.spec/radio-buttons [:confirm])))
 
-(s/def :radio-buttons/props (s/keys :req-un [::strings.spec/action_id]))
+(s/def ::radio-buttons.props (s/keys :req-un [::strings.spec/action_id]))

@@ -46,6 +46,17 @@ See:
 * [clojure.spec.alpha/check-asserts](https://clojuredocs.org/clojure.spec.alpha/check-asserts)
 * [clojure.spec.test.alpha/instrument](https://clojure.github.io/spec.alpha/clojure.spec.test.alpha-api.html#clojure.spec.test.alpha/instrument)
 
+#### repl uilities
+
+The `thlack.surfs.repl` namespace contains some useful utilities for developing with Surfs.
+
+* `(describe :tag)`
+  Get render function metadata and `fspec`.
+* `(doc :tag)`
+  Print component signatures, docstrings, and examples right to the repl!
+* `(props :tag)`
+  Get the prop spec for a component (if it has one).
+
 ### Rendering components
 
 The heart of Surfs is the `render` function.

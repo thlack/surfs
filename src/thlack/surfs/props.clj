@@ -1,6 +1,8 @@
 (ns ^:no-doc thlack.surfs.props
   (:require [clojure.spec.alpha :as s]
-            [thlack.surfs.blocks.spec]))
+            [thlack.surfs.blocks.spec]
+            [thlack.surfs.blocks.spec.section :as section]
+            [thlack.surfs.blocks.spec.input :as input]))
 
 ;;; Prop helpers
 
@@ -61,8 +63,8 @@
     #{:option-group}       (update children :option_groups conj data)
     #{:text}               (assoc children :text (detag data))
     #{:fields}             (merge children (update data :fields #(map second %)))
-    #{:accessory}          (assoc children tag (detag data :section/accessory))
-    #{:element}            (assoc children tag (detag data :input/element))
+    #{:accessory}          (assoc children tag (detag data ::section/accessory))
+    #{:element}            (assoc children tag (detag data ::input/element))
     (assoc children tag data)))
 
 (defn flatten-children

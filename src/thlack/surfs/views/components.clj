@@ -3,7 +3,7 @@
             [thlack.surfs.props :as props]
             [thlack.surfs.validation :refer [validated]]
             [thlack.surfs.views.spec :as views.spec]
-            [thlack.surfs.views.components.spec]))
+            [thlack.surfs.views.components.spec :as vc.spec]))
 
 (defn- with-private-metadata
   "Supports private_metadata as Clojure data structures. If a private_metadata
@@ -39,8 +39,8 @@
         (validated ::views.spec/home))))
 
 (s/fdef home
-  :args (s/alt :props-and-blocks (s/cat :props :view/props :children :view/children)
-               :blocks (s/cat :children :view/children))
+  :args (s/alt :props-and-blocks (s/cat :props ::vc.spec/view.props :children ::vc.spec/view.children)
+               :blocks (s/cat :children ::vc.spec/view.children))
   :ret ::views.spec/home)
 
 (defn modal
@@ -64,5 +64,5 @@
       (validated ::views.spec/modal)))
 
 (s/fdef modal
-  :args (s/cat :props :modal/props :children :view/children)
+  :args (s/cat :props ::vc.spec/modal.props :children ::vc.spec/view.children)
   :ret ::views.spec/modal)
